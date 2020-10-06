@@ -6,11 +6,12 @@ namespace sharpz
     {
         static void Main(string[] args)
         {
-            double[] start = { 0, 0 };
-            double[] end = { 4, 3 };
+            Task1.run();
+            // double[] start = { 0, 0 };
+            // double[] end = { 4, 3 };
 
-            var segment = new Segment(start, end);
-            Console.WriteLine($"({string.Join(':', segment.GetMiddlePoint())})");
+            // var segment = new Segment(start, end);
+            // Console.WriteLine($"({string.Join(':', segment.GetMiddlePoint())})");
         }
     }
 }
