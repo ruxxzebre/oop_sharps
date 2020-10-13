@@ -16,17 +16,6 @@ namespace sharpz
             this.end = end;
         }
 
-        public double GetSegmentLength()
-        {
-            int length = this.start.GetLength(0);
-            double segmentLength = 0;
-            for (int i = 0; i < length; i++)
-            {
-                segmentLength += Math.Pow((this.start[i] - this.end[i]), 2);
-            }
-            return Math.Sqrt(segmentLength);
-        }
-
         public double[] middlePoint
         {
             get
@@ -41,12 +30,27 @@ namespace sharpz
             }
         }
 
-        public void ScaleSegment(int scale)
+        public Segment ScaleSegment(int scale)
         {
             int length = this.start.GetLength(0);
             for (int i = 0; i < length; i++)
             {
                 this.end[i] = this.end[i] * scale;
+            }
+            return this;
+        }
+
+        public double segmentLength
+        {
+            get
+            {
+                int length = this.start.GetLength(0);
+                double segmentLength = 0;
+                for (int i = 0; i < length; i++)
+                {
+                    segmentLength += Math.Pow((this.start[i] - this.end[i]), 2);
+                }
+                return Math.Sqrt(segmentLength);
             }
         }
 
