@@ -8,7 +8,7 @@ namespace sharpz
         public static void run()
         {
             //runs Example
-            TestSegment.recieveCoordsFromFile();
+            TestSegment.run();
         }
     }
 }

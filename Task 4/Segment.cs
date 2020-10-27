@@ -1,14 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace sharpz
 {
     public class Segment
     {
-        private double[] start;
-        private double[] end;
-        public Segment(double[] start, double[] end)
+        private List<double> start;
+        private List<double> end;
+        public Segment(List<double> start, List<double> end)
         {
-            if (start.GetLength(0) != end.GetLength(0))
+            if (start.Count != end.Count)
             {
                 throw new Exception("Starting and ending points has a different dimension.");
             }
@@ -16,15 +17,15 @@ namespace sharpz
             this.end = end;
         }
 
-        public double[] middlePoint
+        public List<double> middlePoint
         {
             get
             {
-                int length = this.start.GetLength(0);
-                double[] point = new double[length];
+                int length = this.start.Count;
+                List<double> point = new List<double>();
                 for (int i = 0; i < length; i++)
                 {
-                    point[i] = (this.start[i] + this.end[i]) / 2;
+                    point.Add((this.start[i] + this.end[i]) / 2);
                 }
                 return point;
             }
@@ -32,7 +33,7 @@ namespace sharpz
 
         public Segment ScaleSegment(int scale)
         {
-            int length = this.start.GetLength(0);
+            int length = this.start.Count;
             for (int i = 0; i < length; i++)
             {
                 this.end[i] = this.end[i] * scale;
@@ -44,7 +45,7 @@ namespace sharpz
         {
             get
             {
-                int length = this.start.GetLength(0);
+                int length = this.start.Count;
                 double segmentLength = 0;
                 for (int i = 0; i < length; i++)
                 {
@@ -54,7 +55,7 @@ namespace sharpz
             }
         }
 
-        public double[] startingPoint
+        public List<Double> startingPoint
         {
             get
             {
@@ -62,7 +63,7 @@ namespace sharpz
             }
         }
 
-        public double[] endingPoint
+        public List<Double> endingPoint
         {
             get
             {

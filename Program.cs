@@ -9,7 +9,6 @@ namespace sharpz
             task4.run();
             // double[] start = { 0, 0 };
             // double[] end = { 4, 3 };
-
             // var segment = new Segment(start, end);
             // Console.WriteLine($"({string.Join(':', segment.GetMiddlePoint())})");
         }
