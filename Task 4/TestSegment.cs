@@ -9,29 +9,40 @@ namespace sharpz
         public static void run()
         {
             TestSegment test = new TestSegment();
-            test.privateRun();
+            test.privateRun(test.askUser());
         }
 
-        public void privateRun()
+        public void privateRun(int n)
         {
-            // double[][] coords = getExampleCoords();
-            // double[][] coords = recieveCoordsFromKeyboard();
-            List<Double>[] coords = this.recieveCoordsFromFile();
+            List<Double>[] coords = { };
+            switch (n)
+            {
+                case 1: coords = this.getExampleCoords(); break;
+                case 2: coords = this.recieveCoordsFromFile(); break;
+                case 3: coords = this.recieveCoordsFromKeyboard(); break;
+                default: throw new Exception("Invalid input int");
+            }
 
             Segment segment1 = new Segment(coords[0], coords[1]);
             List<Double> middlePoint = segment1.middlePoint;
             double segmentLength = segment1.segmentLength;
             // segment1.ScaleSegment(3);
-            for (int i = 0; i < coords[0].Count; i++)
+            Utils.PrintGenericDoubleArray(coords[0]);
+            Utils.PrintGenericDoubleArray(coords[1]);
+        }
+        public int askUser()
+        {
+            Console.WriteLine("Please enter preferable option\n1) Coordinates from example\n2) Coordinates from file\n3) Coordinates from keyboard");
+            int answer = 0;
+            try
             {
-                Console.Write($"{coords[0][i]} ");
+                answer = Convert.ToInt32(Console.ReadLine());
             }
-            Console.WriteLine("");
-            for (int i = 0; i < coords[1].Count; i++)
+            catch (Exception)
             {
-                Console.Write($"{coords[1][i]} ");
+                Console.WriteLine("Invalid input");
             }
-            Console.WriteLine("");
+            return answer;
         }
 
         public List<Double>[] getExampleCoords()
@@ -48,19 +59,14 @@ namespace sharpz
             List<Double> ending_point = new List<Double>();
             string temp = "";
 
-            while (temp.Trim() != "stop")
-            {
-                Console.WriteLine("Enter starting point coordinates (separated by gap): ");
-                temp = Console.ReadLine();
-                starting_point = this.FormDoubleListFromString(temp);
-            }
+            Console.WriteLine("Enter starting point coordinates (separated by gap): ");
+            temp = Console.ReadLine();
+            starting_point = this.FormDoubleListFromString(temp);
 
-            while (temp.Trim() != "stop")
-            {
-                Console.WriteLine("Enter ending point coordinates (separated by gap): ");
-                temp = Console.ReadLine();
-                ending_point = this.FormDoubleListFromString(temp);
-            }
+            Console.WriteLine("Enter ending point coordinates (separated by gap): ");
+            temp = Console.ReadLine();
+            ending_point = this.FormDoubleListFromString(temp);
+
 
             if (starting_point.Count == ending_point.Count)
             {
@@ -74,7 +80,6 @@ namespace sharpz
             string[] text = System.IO.File.ReadAllLines("./Task 4/recieved.txt");
 
             List<Double>[] a = { this.FormDoubleListFromString(text[0]), this.FormDoubleListFromString(text[1]) };
-            Console.WriteLine(a.Length);
             return a;
         }
 
