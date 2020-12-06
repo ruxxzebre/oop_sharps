@@ -6,7 +6,7 @@ namespace sharpz
     {
         static void Main(string[] args)
         {
-            Task5.run();
+            Task8.run();
             // double[] start = { 0, 0 };
             // double[] end = { 4, 3 };
             // var segment = new Segment(start, end);
