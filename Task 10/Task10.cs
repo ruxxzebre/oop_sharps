@@ -2,29 +2,34 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
+// WE GONNA THROW A PARTY
+// LET'S RUN IT UP RUN IT UP
+// YEAH
+
+// ГРАЄМОСЬ ІЗ ДЕЛЕГАТАМИ ТА ІНТЕРФЕЙСАМИ У ПРЯМОМУ ЄФІРІ О ДРУГІЙ НОЧІ
+//  ДИКИЙ ФЛЄКС ТІЛЬКИ ТУТ 
+
 namespace sharpz
 {
-    public class Task8
+    public class Task10 
     {
-        public static void run() 
+        public static void run()
         {
-            MyComplex A = new MyComplex(1,1);
-            MyComplex B,D;
-            MyComplex C = new MyComplex(1);
-            B = A + C;
-            Console.WriteLine($"{A} {B} {C}");
-            C = A + 10.5;
-            Console.WriteLine($"{A} {B} {C}");
-            C = 10.5 + A;
-            Console.WriteLine($"{A} {B} {C}");
-            D = -C;
-            Console.WriteLine($"{A} {B} {C} {D}");
-            C = A + B + C + D;
-            Console.WriteLine($"{A} {B} {C} {D}");
-            D.InputFromTerminal();
-            Console.WriteLine($"A = {A}, B = {B}, C = {C}, D = {D}");
+            MyComplex complex = new MyComplex();
+            // complex.InputFromFile(Path.GetFullPath("Task 10/complex.txt"));
+            complex.InputFromTerminal();
         }
 
+        // public interface IMyComplexIndex
+        // {
+        //     double this[string index];
+        // }
+
+        // public public interface Iinputable
+        // {
+        //     void InputFromTerminal();
+        //     void InputFromFile(pathToFile);
+        // }
 
         public class MyComplex
         {
@@ -104,7 +109,6 @@ namespace sharpz
             }
 
             public void ParseComplex(string str) {
-                //регекс експрешн що парсить комплексні числа (магічна вещь, я відчув шрами на спині після дебага цьої штуки)
                 var complexPattern = @"(\s*[\+\-]?\s*\d+\,?\d*\s*)([\+\-]\s*\d+\,?\d+i)";
                 var matches = Regex.Match(str, complexPattern);
 
@@ -112,12 +116,10 @@ namespace sharpz
 
                 string real = matches.Groups[1].Value;
                 string imaginary = matches.Groups[2].Value;
-                //видаляємо "і", бо воно нам не треба, другий аргумент і так є уявною частиною, просто це покажник що 
-                //що та частина ну типу регекс, так треба
+                //remove 'i' from imaginary part
                 real = Regex.Replace(real, @"\s+", String.Empty);
                 imaginary = Regex.Replace(imaginary, @"\s+|i", String.Empty);
-                 
-                //консоль лог щоб ТочНО впевнитись що все ок і конвертація
+                
                 Console.WriteLine($"Real: {real} and Imaginary: {imaginary}");
                 this.real = Convert.ToDouble(real);
                 this.imaginary = Convert.ToDouble(imaginary);
