@@ -30,10 +30,10 @@ namespace sharpz
         {
             private double real, imaginary;
 
-            public MyComplex(double a=0, double b=0)
+            public MyComplex(double real=0, double imaginary=0)
             {
-                this.real = a;
-                this.imaginary = b;
+                this.real = real;
+                this.imaginary = imaginary;
             }
 
             public static MyComplex operator +(MyComplex a, MyComplex b)
@@ -68,9 +68,6 @@ namespace sharpz
 
             public static MyComplex operator /(MyComplex a, MyComplex b)
             {
-                //(A+Bi)/(C+Di) = (A*B) + (C*D)i
-                // a.real*b.real == (A*B)
-                // a.imaginary*b.imaginary == (C*D)i 
                 // NOTE (C*D)i == (Ci*Di) 
                 return new MyComplex(a.real*b.real, a.imaginary*b.imaginary);
             }
