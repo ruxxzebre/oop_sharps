@@ -102,17 +102,25 @@ namespace sharpz
 
             public void ParseComplex(string str) {
                 //регекс експрешн що парсить комплексні числа (магічна вещь, я відчув шрами на спині після дебага цьої штуки)
-                var complexPattern = @"(\s*[\+\-]?\s*\d+\,?\d*\s*)([\+\-]\s*\d+\,?\d+i)";
+                var complexPattern = @"(\s*[\+\-]?\s*\d+\,?\d*?\s*)([\+\-]\s*\d+\,?\d*?\*?i)";
                 var matches = Regex.Match(str, complexPattern);
 
+                if (matches.Groups.Count <= 1) {
+                    Console.WriteLine("Passed invalid value or empty string, complex number is set to default - 0 + 0i");
+                    this.real = 0;
+                    this.imaginary = 0;
+                    return;
+                }
                 if (matches.Groups.Count < 3) throw new Exception("Not a complex number");
 
                 string real = matches.Groups[1].Value;
                 string imaginary = matches.Groups[2].Value;
                 //видаляємо "і", бо воно нам не треба, другий аргумент і так є уявною частиною, просто це покажник що 
                 //що та частина ну типу регекс, так треба
+                //прибираємо пробіли
                 real = Regex.Replace(real, @"\s+", String.Empty);
-                imaginary = Regex.Replace(imaginary, @"\s+|i", String.Empty);
+                //прибираємо сміття
+                imaginary = Regex.Replace(imaginary, @"\s+|i|\*", String.Empty);
                  
                 //консоль лог щоб ТочНО впевнитись що все ок і конвертація
                 Console.WriteLine($"Real: {real} and Imaginary: {imaginary}");

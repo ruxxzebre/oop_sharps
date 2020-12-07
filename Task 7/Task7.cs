@@ -12,7 +12,7 @@ namespace sharpz
     public static void run() 
     {
       Console.Write("Path: ");
-      var path = Console.ReadLine();
+      var path = Path.GetFullPath($"Task 7/{Console.ReadLine()}");
       WeatherDays w = new WeatherDays();
       try {
         w.LoadFromFile(path);

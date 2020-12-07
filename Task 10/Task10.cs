@@ -16,104 +16,83 @@ using System.Text.RegularExpressions;
 
 namespace sharpz
 {
+    
     public class Task10 
     {
+
+
         public static void run()
         {
-            MyComplex complex = new MyComplex();
+            MyComplexChild complex = new MyComplexChild();
             // complex.InputFromFile(Path.GetFullPath("Task 10/complex.txt"));
             complex.InputFromTerminal();
+
         }
 
-        // public interface IMyComplexIndex
-        // {
-        //     double this[string index];
-        // }
-
-        // public public interface Iinputable
-        // {
-        //     void InputFromTerminal();
-        //     void InputFromFile(pathToFile);
-        // }
-
-        public class MyComplex
+        public interface IMyComplexIndex
         {
-            private double real, imaginary;
+            double this[string type]{get;}
+        }
 
-            public MyComplex(double a=0, double b=0)
+        public interface Iinputable
+        {
+            void InputFromTerminal();
+            void InputFromFile(string pathToFile);
+        }
+
+        public class MyComplexBase
+        {
+            protected double real, imaginary;
+
+            public delegate void SpecialOutput(string message, MyComplexBase myObj);
+            public SpecialOutput mySetFuncOutput;
+
+            public MyComplexBase(double a=0, double b=0)
             {
                 this.real = a;
                 this.imaginary = b;
             }
 
-            public static MyComplex operator +(MyComplex a, MyComplex b)
+            public static MyComplexBase operator +(MyComplexBase a, MyComplexBase b)
             {
-                return new MyComplex(a.real + b.real, a.imaginary + b.imaginary);
+                return new MyComplexBase(a.real + b.real, a.imaginary + b.imaginary);
             }
 
-            public static MyComplex operator +(MyComplex a, double b)
+            public static MyComplexBase operator +(MyComplexBase a, double b)
             {
-                return new MyComplex(a.real + b, a.imaginary);
+                return new MyComplexBase(a.real + b, a.imaginary);
             }
 
-            public static MyComplex operator +(double a, MyComplex b)
+            public static MyComplexBase operator +(double a, MyComplexBase b)
             {
-                return new MyComplex(a + b.real, b.imaginary);
+                return new MyComplexBase(a + b.real, b.imaginary);
             }
 
-            public static MyComplex operator -(MyComplex a)
+            public static MyComplexBase operator -(MyComplexBase a)
             {
-                return new MyComplex(a.real * -1, a.imaginary);
+                return new MyComplexBase(a.real * -1, a.imaginary);
             }
 
-            public static MyComplex operator -(MyComplex a, MyComplex b)
+            public static MyComplexBase operator -(MyComplexBase a, MyComplexBase b)
             {
-                return new MyComplex(a.real - b.real, a.imaginary - b.imaginary);
+                return new MyComplexBase(a.real - b.real, a.imaginary - b.imaginary);
             }
             
-            public static MyComplex operator *(MyComplex a, MyComplex b)
+            public static MyComplexBase operator *(MyComplexBase a, MyComplexBase b)
             {
-                return new MyComplex(a.real*b.real-a.imaginary*b.imaginary, a.imaginary*b.real-a.real*b.imaginary);
+                return new MyComplexBase(a.real*b.real-a.imaginary*b.imaginary, a.imaginary*b.real-a.real*b.imaginary);
             }
 
-            public static MyComplex operator /(MyComplex a, MyComplex b)
+            public static MyComplexBase operator /(MyComplexBase a, MyComplexBase b)
             {
                 //(A+Bi)/(C+Di) = (A*B) + (C*D)i
                 // a.real*b.real == (A*B)
                 // a.imaginary*b.imaginary == (C*D)i 
                 // NOTE (C*D)i == (Ci*Di) 
-                return new MyComplex(a.real*b.real, a.imaginary*b.imaginary);
+                return new MyComplexBase(a.real*b.real, a.imaginary*b.imaginary);
             }
 
-            public double this[string type]
-            {
-                get
-                {
-                    switch (type)
-                    {
-                        case "realValue":
-                            return this.real;
-                        case "imageValue":
-                            return this.imaginary;
-                        default:
-                            return 0;
-                    }
-                }
-            }
-
-            public void InputFromTerminal()
-            {
-                string complexStuff = Console.ReadLine();
-                this.ParseComplex(complexStuff);
-            }
-
-            public void InputFromFile(string pathToFile)
-            {
-                string data = File.ReadAllText(pathToFile);
-                this.ParseComplex(data);
-            }
-
-            public void ParseComplex(string str) {
+            protected void ParseComplex(string str) {
                 var complexPattern = @"(\s*[\+\-]?\s*\d+\,?\d*\s*)([\+\-]\s*\d+\,?\d+i)";
                 var matches = Regex.Match(str, complexPattern);
 
@@ -133,6 +112,38 @@ namespace sharpz
             public override string ToString()
             {
                 return this.real + "+" + this.imaginary + "*i";
+            }
+        }
+
+        class MyComplexChild: MyComplexBase, IMyComplexIndex, Iinputable
+        {
+            public void InputFromTerminal()
+            {
+                Console.WriteLine("Enter complex number in algebraic notation: ");
+                string complexStuff = Console.ReadLine();
+                this.ParseComplex(complexStuff);
+            }
+
+            public void InputFromFile(string pathToFile)
+            {
+                string data = File.ReadAllText(pathToFile);
+                this.ParseComplex(data);
+            }
+
+            public double this[string type]
+            {
+                get
+                {
+                    switch (type)
+                    {
+                        case "realValue":
+                            return this.real;
+                        case "imageValue":
+                            return this.imaginary;
+                        default:
+                            return 0;
+                    }
+                }
             }
         }
     }
