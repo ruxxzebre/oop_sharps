@@ -28,7 +28,7 @@ namespace sharpz
 
         public class MyComplex
         {
-            private double real, imaginary;
+            public double real, imaginary;
 
             public MyComplex(double real=0, double imaginary=0)
             {
@@ -117,6 +117,7 @@ namespace sharpz
                 string imaginary = matches.Groups[2].Value;
                 //видаляємо "і", бо воно нам не треба, другий аргумент і так є уявною частиною, просто це покажник що 
                 //що та частина ну типу регекс, так треба
+                
                 //прибираємо пробіли
                 real = Regex.Replace(real, @"\s+", String.Empty);
                 //прибираємо сміття

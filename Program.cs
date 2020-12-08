@@ -6,7 +6,7 @@ namespace sharpz
     {
         static void Main(string[] args)
         {
-            Task8.run();
+            Task10.run();
  
             // double[] start = { 0, 0 };
             // double[] end = { 4, 3 };

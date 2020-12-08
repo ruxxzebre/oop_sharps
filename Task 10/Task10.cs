@@ -20,13 +20,28 @@ namespace sharpz
     public class Task10 
     {
 
+        public void SpecialFunction1(string message, MyComplexBase myObj) {
+            Console.WriteLine($"1. {message}: {myObj.real} + {myObj.imaginary}*i");
+        }
+
+        public void SpecialFunction2(string message, MyComplexBase myObj) {
+            Console.WriteLine($"2. {message}: {myObj.real} + {myObj.imaginary}*i");
+        }
+
+        public void main() {
+            MyComplexChild complex1 = new MyComplexChild();
+            MyComplexChild complex2 = new MyComplexChild();
+
+            complex1.mySetFuncOutput = this.SpecialFunction1;
+            complex2.mySetFuncOutput = this.SpecialFunction2;
+            // complex.InputFromFile(Path.GetFullPath("Task 10/complex.txt"));
+            complex1.InputFromTerminal();
+        }
 
         public static void run()
         {
-            MyComplexChild complex = new MyComplexChild();
-            // complex.InputFromFile(Path.GetFullPath("Task 10/complex.txt"));
-            complex.InputFromTerminal();
-
+            Task10 task = new Task10();
+            task.main();
         }
 
         public interface IMyComplexIndex
@@ -42,7 +57,7 @@ namespace sharpz
 
         public class MyComplexBase
         {
-            protected double real, imaginary;
+            public double real, imaginary;
 
             public delegate void SpecialOutput(string message, MyComplexBase myObj);
             public SpecialOutput mySetFuncOutput;
@@ -92,18 +107,30 @@ namespace sharpz
                 return new MyComplexBase(a.real*b.real, a.imaginary*b.imaginary);
             }
 
-            protected void ParseComplex(string str) {
-                var complexPattern = @"(\s*[\+\-]?\s*\d+\,?\d*\s*)([\+\-]\s*\d+\,?\d+i)";
+            public void ParseComplex(string str) {
+                //регекс експрешн що парсить комплексні числа (магічна вещь, я відчув шрами на спині після дебага цьої штуки)
+                var complexPattern = @"(\s*[\+\-]?\s*\d+\,?\d*?\s*)([\+\-]\s*\d+\,?\d*?\*?i)";
                 var matches = Regex.Match(str, complexPattern);
 
+                if (matches.Groups.Count <= 1) {
+                    Console.WriteLine("Passed invalid value or empty string, complex number is set to default - 0 + 0i");
+                    this.real = 0;
+                    this.imaginary = 0;
+                    return;
+                }
                 if (matches.Groups.Count < 3) throw new Exception("Not a complex number");
 
                 string real = matches.Groups[1].Value;
                 string imaginary = matches.Groups[2].Value;
-                //remove 'i' from imaginary part
-                real = Regex.Replace(real, @"\s+", String.Empty);
-                imaginary = Regex.Replace(imaginary, @"\s+|i", String.Empty);
+                //видаляємо "і", бо воно нам не треба, другий аргумент і так є уявною частиною, просто це покажник що 
+                //що та частина ну типу регекс, так треба
                 
+                //прибираємо пробіли
+                real = Regex.Replace(real, @"\s+", String.Empty);
+                //прибираємо сміття
+                imaginary = Regex.Replace(imaginary, @"\s+|i|\*", String.Empty);
+                 
+                //консоль лог щоб ТочНО впевнитись що все ок і конвертація
                 Console.WriteLine($"Real: {real} and Imaginary: {imaginary}");
                 this.real = Convert.ToDouble(real);
                 this.imaginary = Convert.ToDouble(imaginary);
@@ -122,12 +149,16 @@ namespace sharpz
                 Console.WriteLine("Enter complex number in algebraic notation: ");
                 string complexStuff = Console.ReadLine();
                 this.ParseComplex(complexStuff);
+                MyComplexBase newComplex = new MyComplexBase(this["realValue"], this["imaginaryValue"]);
+                this.mySetFuncOutput("Варіант 7", newComplex);
             }
 
             public void InputFromFile(string pathToFile)
             {
                 string data = File.ReadAllText(pathToFile);
                 this.ParseComplex(data);
+                MyComplexBase newComplex = new MyComplexBase(this["realValue"], this["imageValue"]);
+                this.mySetFuncOutput("Варіант 7", newComplex);
             }
 
             public double this[string type]
